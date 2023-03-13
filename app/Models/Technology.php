@@ -9,6 +9,9 @@ class Technology extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['type', 'logo'];
+
+
     public function projects()
     {
         return $this->belongsToMany(Project::class);
