@@ -46,7 +46,7 @@
 </div>
 
 
-<div class="row row-cols-2">
+<div class="row row-cols-1">
     <div class="col">
         {{-- Description --}}
         <div class="mb-3">
@@ -54,6 +54,9 @@
             <textarea class="form-control" id="description" name="description" rows="3" placeholder="Description">{{ old('description', $project->description) }}</textarea>
         </div>
     </div>
+</div>
+
+<div class="row row-cols-2 align-items-center">
     <div class="col">
         {{-- Type --}}
         <div class="mb-3">
@@ -66,6 +69,18 @@
                     </option>
                 @endforeach
             </select>
+        </div>
+    </div>
+
+    <div class="col text-center">
+        {{-- Technologies --}}
+        <div class="mb-3">
+            @foreach ($technologies as $technology)
+                <input class="form-check-input" type="checkbox" value="{{ $technology->id }}"
+                    id="technology-{{ $technology->id }}" name="technologies[]"
+                    @if (in_array($technology->id, old('technologies', $project_technologies))) checked @endif>
+                <label class="form-check-label" for="technology-{{ $technology->id }}">{{ $technology->type }}</label>
+            @endforeach
         </div>
     </div>
 </div>

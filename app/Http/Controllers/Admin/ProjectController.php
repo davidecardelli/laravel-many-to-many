@@ -6,7 +6,10 @@ use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Type;
+use App\Models\Technology;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Arr;
+
 
 class ProjectController extends Controller
 {
@@ -26,7 +29,8 @@ class ProjectController extends Controller
     {
         $project = new Project();
         $types = Type::all();
-        return view('admin.projects.create', compact('project', 'types'));
+        $technologies = Technology::all();
+        return view('admin.projects.create', compact('project', 'types', 'technologies'));
     }
 
     /**
@@ -34,7 +38,6 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-
         $request->validate([
             'title' => 'required|string',
             'description' => 'nullable|string',
@@ -58,6 +61,8 @@ class ProjectController extends Controller
         $project->fill($data);
         $project->save();
 
+        if (Arr::exists($data, 'technologies')) $project->technologies()->attach($data['technologies']);
+
         return to_route('admin.projects.show', $project->id)
             ->with('message', "Il progetto $project->title è stato creato correttamente")
             ->with('type', 'success');
@@ -78,7 +83,10 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $types = Type::all();
-        return view('admin.projects.edit', compact('project', 'types'));
+        $technologies = Technology::all();
+        $project_technologies = $project->technologies->pluck('id')->toArray();
+
+        return view('admin.projects.edit', compact('project', 'types', 'technologies', 'project_technologies'));
     }
 
     /**
@@ -108,6 +116,10 @@ class ProjectController extends Controller
         $project->fill($data);
 
         $project->update($data);
+
+        if (Arr::exists($data, 'technologies')) $project->technologies()->sync($data['technologies']);
+        else if (count($project->technologies)) $project->technologies()->detach();
+
         return to_route('admin.projects.show', $project->id)
             ->with('message', 'Il progetto è stato modificato correttamente')
             ->with('type', 'success');
