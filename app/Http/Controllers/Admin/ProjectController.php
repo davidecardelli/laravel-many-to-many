@@ -27,10 +27,12 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        $project = new Project();
         $types = Type::all();
         $technologies = Technology::all();
-        return view('admin.projects.create', compact('project', 'types', 'technologies'));
+        $project = new Project();
+        $project_technologies = $project->technologies->pluck('id')->toArray();
+
+        return view('admin.projects.create', compact('project', 'types', 'technologies', 'project_technologies'));
     }
 
     /**
