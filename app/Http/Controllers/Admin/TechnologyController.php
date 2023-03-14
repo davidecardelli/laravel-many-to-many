@@ -33,6 +33,11 @@ class TechnologyController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'type' => 'required|string|unique:technologies',
+            'logo' => 'image|nullable',
+        ]);
+
         $data = $request->all();
 
         $technology = new Technology();
@@ -71,6 +76,11 @@ class TechnologyController extends Controller
      */
     public function update(Request $request, Technology $technology)
     {
+        $request->validate([
+            'type' => 'required|string|unique:technologies',
+            'logo' => 'image|nullable',
+        ]);
+
         $data = $request->all();
 
         if (array_key_exists('logo', $data)) {

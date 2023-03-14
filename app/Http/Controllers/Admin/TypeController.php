@@ -31,6 +31,11 @@ class TypeController extends Controller
      */
     public function store(Request $request)
     {
+
+        $request->validate([
+            'type' => 'required|string|unique:types',
+        ]);
+
         $data = $request->all();
 
         $type = new Type();
@@ -63,6 +68,11 @@ class TypeController extends Controller
      */
     public function update(Request $request, Type $type)
     {
+
+        $request->validate([
+            'type' => 'required|string|unique:types',
+        ]);
+
         $data = $request->all();
         $type->fill($data);
         $type->update($data);

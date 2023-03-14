@@ -45,6 +45,7 @@ class ProjectController extends Controller
             'description' => 'nullable|string',
             'image' => 'nullable|image',
             'url' => 'nullable|url',
+            'type_id' => 'nullable|exists:types,id'
         ], [
             'title.required' => 'Il titolo del progetto è obbligatorio',
             'image.image' => 'L\'image deve essere un file di tipo immagine',
@@ -101,6 +102,7 @@ class ProjectController extends Controller
             'description' => 'nullable|string',
             'image' => 'nullable|image',
             'url' => 'nullable|url',
+            'type_id' => 'nullable|exists:types,id'
         ], [
             'title.required' => 'Il titolo del progetto è obbligatorio',
             'image.image' => 'L\'image deve essere un file di tipo immagine',
